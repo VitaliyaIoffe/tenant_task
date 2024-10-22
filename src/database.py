@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 import os
 
@@ -15,31 +16,30 @@ class DatabaseManager:
 
     def _initialize_db(self) -> None:
         """Create the tenants table if it doesn't exist."""
+        logging.info("Initializing database")
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
 
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS tenants (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                address TEXT,
-                email TEXT,
-                phone_number TEXT,
-                company TEXT
-            )
-        """)
-        conn.commit()
-        conn.close()
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("""CREATE TABLE IF NOT EXISTS Tenants 
+                (address, email, phone_number, company)""")
+                logging.info("Database initialized successfully")
+        except Exception as e:
+            logging.error(f"Error initializing the database: {e}")
 
     def insert_tenant(self, tenant: Tenant) -> None:
         """Insert tenant data into the database."""
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
+        logging.info("Inserting tenant")
 
-        cursor.execute("""
-            INSERT INTO tenants (address, email, phone_number, company)
-            VALUES (?, ?, ?, ?)
-        """, tenant.to_db_tuple())
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                elements = tenant.to_db_tuple()  # Ensure this method returns the correct tuple
+                logging.info(f"Inserting tenant data: {elements}")  # Log the data being inserted
+                cursor.execute("""INSERT INTO tenants (address, email, phone_number, company)
+                VALUES (?, ?, ?, ?);""", elements)
 
-        conn.commit()
-        conn.close()
+                logging.info("Tenant inserted successfully")
+        except Exception as e:
+            logging.error(f"Error inserting tenant: {e}")
