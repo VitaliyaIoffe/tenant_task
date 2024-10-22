@@ -1,12 +1,7 @@
 import argparse
-from enum import Enum
 import getpass
 
-
-class TenantPortal(Enum):
-    CLICK_PAY = "click_pay"
-    ACTIVE_BUILDING = "activebuilding"
-    RENT_CAFE = "rentcafe"
+from src.models import TenantPortal
 
 
 def parse_args() -> argparse.Namespace:
