@@ -14,3 +14,6 @@ class Tenant:
         self.email = email
         self.phone_number = phone_number
         self.mgmt_company = company
+
+    def to_db_tuple(self) -> tuple[str, ...]:
+        return self.address, self.email, self.phone_number, self.mgmt_company
