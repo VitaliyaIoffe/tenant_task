@@ -1,6 +1,7 @@
 import argparse
 import getpass
 import logging
+import os
 
 from src.database import DatabaseManager
 from src.models import TenantPortal
@@ -41,7 +42,11 @@ def get_portal(tenant_portal: str, username: str, password: str) -> PortalRetrie
 if __name__ == "__main__":
     logger.info("Starting app")
     args = parse_args()
-    password = getpass.getpass(prompt="Enter your password: ")
+    # password = getpass.getpass(prompt="Enter your password: ")
+    password = os.getenv("PASSWORD", "myydefaultpassword")
+    if not password:
+        raise ValueError("Password not set. Use the PASSWORD environment variable.")
+
     database_manager = DatabaseManager()
     portal = get_portal(tenant_portal=args.tenant_portal, username=args.username, password=password)
     data = portal.retrieve_data()
