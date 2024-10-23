@@ -7,7 +7,8 @@ from src.models import TenantPortal
 from src.portals import ClickPayPortalRetriever, PortalRetriever
 
 
-logger = logging.getLogger('app')
+logger = logging.getLogger(__file__)
+logger.setLevel(level=logging.INFO)
 
 
 def parse_args() -> argparse.Namespace:
@@ -25,7 +26,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def get_portal(tenant_portal: str, username: str, password: str) -> PortalRetriever:
-    logger.warning("Getting portal")
+    logger.info("Getting portal")
     portal = None
     if tenant_portal == TenantPortal.CLICK_PAY.value:
         logger.info(f"Retrieving data from {tenant_portal} for user {username}...")

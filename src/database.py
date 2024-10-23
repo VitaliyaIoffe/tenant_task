@@ -6,7 +6,8 @@ from src.models import Tenant
 
 DB_PATH = 'db/tenants.db'
 
-logger = logging.getLogger('app')
+logger = logging.getLogger(__file__)
+logger.setLevel(level=logging.INFO)
 
 
 class DatabaseManager:
