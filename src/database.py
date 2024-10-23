@@ -25,8 +25,7 @@ class DatabaseManager:
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
-                cursor.execute("""CREATE TABLE IF NOT EXISTS Tenants 
-                (address, email, phone_number, company)""")
+                cursor.execute("""CREATE TABLE IF NOT EXISTS Tenants (address, email, phone_number, company)""")
                 logging.info("Database initialized successfully")
         except Exception as e:
             logger.error(f"Error initializing the database: {e}")
