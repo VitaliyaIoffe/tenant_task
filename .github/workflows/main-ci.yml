@@ -27,6 +27,7 @@ jobs:
 
     - name: Run mypy
       run: |
+        pip install mypy
         mypy .
 
     - name: Build Docker image
