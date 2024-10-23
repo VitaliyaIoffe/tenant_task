@@ -6,6 +6,8 @@ from src.models import Tenant
 
 DB_PATH = 'db/tenants.db'
 
+logger = logging.getLogger('app')
+
 
 class DatabaseManager:
     """Manages SQLite database operations."""
@@ -16,7 +18,7 @@ class DatabaseManager:
 
     def _initialize_db(self) -> None:
         """Create the tenants table if it doesn't exist."""
-        logging.info("Initializing database")
+        logger.info("Initializing database")
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
 
         try:
@@ -26,7 +28,7 @@ class DatabaseManager:
                 (address, email, phone_number, company)""")
                 logging.info("Database initialized successfully")
         except Exception as e:
-            logging.error(f"Error initializing the database: {e}")
+            logger.error(f"Error initializing the database: {e}")
 
     def insert_tenant(self, tenant: Tenant) -> None:
         """Insert tenant data into the database."""
@@ -36,10 +38,10 @@ class DatabaseManager:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
                 elements = tenant.to_db_tuple()  # Ensure this method returns the correct tuple
-                logging.info(f"Inserting tenant data: {elements}")  # Log the data being inserted
+                logger.info(f"Inserting tenant data: {elements}")  # Log the data being inserted
                 cursor.execute("""INSERT INTO tenants (address, email, phone_number, company)
                 VALUES (?, ?, ?, ?);""", elements)
 
-                logging.info("Tenant inserted successfully")
+                logger.info("Tenant inserted successfully")
         except Exception as e:
-            logging.error(f"Error inserting tenant: {e}")
+            logger.error(f"Error inserting tenant: {e}")

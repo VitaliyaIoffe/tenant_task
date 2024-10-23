@@ -21,5 +21,5 @@ def setup_logging(default_path='logging.conf', default_level=logging.INFO, env_k
 # Setup logging
 setup_logging()
 
-# Create a logger for this module
-logger = logging.getLogger('app')
+# # Create a logger for this module
+# logger = logging.getLogger('app')
